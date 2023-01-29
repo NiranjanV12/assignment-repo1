@@ -1,12 +1,37 @@
 pipeline {
     agent any
-
+parameters { string(name: 'IMG_VER', defaultValue: 'latest', description: '') }
     stages {
-        stage('Hello') {
+        stage('clonerepo') {
             steps {
-                echo 'Hello World'
+
+                git branch: 'main',
+                 credentialsId: 'niranjanv12',
+                 url: 'https://github.com/NiranjanV12/assignment-repo1.git'
+                 
+                sh 'ls'
             }
+        }
+        stage('build and upload') {
+            steps {
+
+                sh 'docker build -t demoapp1 .'
+                sh 'docker tag demoapp1:latest 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER'
+                sh 'docker push 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER'
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'app1', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''
+                    pwd
+                    if [ -z $(docker ps | grep -i "demoapp1") ]
+                    then
+                    	echo "true";
+                           	docker run -itd -p 8081:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER 
+                    else 
+                    	echo "false";
+                    docker stop demoapp1 && docker rm demoapp1 && docker run -itd -p 8081:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER
+                    fi
+
+                ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])            }
         }
     }
 }
+
 
