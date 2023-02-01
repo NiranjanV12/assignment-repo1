@@ -1,0 +1,5 @@
+---
+# tasks file for commons
+- name: get new boot times
+  script: "install.sh"
+
