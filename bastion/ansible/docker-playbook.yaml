@@ -2,5 +2,4 @@
 - hosts: "{{ curr_host }}"
   become: yes
   roles:
-    - role: commons
-
+    - role: docker-ins

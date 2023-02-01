@@ -1,3 +1,7 @@
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
 module "vote_service_sg_1" {
   source = "terraform-aws-modules/security-group/aws"
 
@@ -11,7 +15,7 @@ module "vote_service_sg_1" {
       to_port     = 22
       protocol    = "tcp"
       description = "User-service ports"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks =  "${chomp(data.http.myip.body)}/32"
     }
 
   ]
@@ -30,6 +34,24 @@ module "vote_service_sg_2" {
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
 
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      description = "User-service ports"
+      cidr_blocks =  "0.0.0.0/0"
+    },
+    {
+      from_port   = 8081
+      to_port     = 8081
+      protocol    = "tcp"
+      description = "User-service ports"
+      cidr_blocks =  "0.0.0.0/0"
+    }
+
+
+  ]
 
 
 egress_rules = [ "all-all"]

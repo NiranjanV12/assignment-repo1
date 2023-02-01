@@ -1,0 +1,8 @@
+[jenkins]
+10.0.1.89 ansible_ssh_ansible_ssh_user=ubuntu ansible_ssh_remote_ssh_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/task1pem.pem ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+
+[app1]
+10.0.2.194 ansible_ssh_ansible_ssh_user=ubuntu ansible_ssh_remote_ssh_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/task1pem.pem ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+

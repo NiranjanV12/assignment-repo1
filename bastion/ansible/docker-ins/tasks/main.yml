@@ -1,0 +1,6 @@
+---
+# tasks file for docker-ins
+- name: Run a script 
+  ansible.builtin.script: docker-ins.sh 
+  args:
+    executable: bash
