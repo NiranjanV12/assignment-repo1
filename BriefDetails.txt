@@ -1,0 +1,7 @@
+Terraform VM > creates bastion-vm, jenkins-vm and app-vm
+bastionvm > install ansible
+proxy jump from Terraform-vm to jenkins-vm with bastion-vm as proxy
+proxy jump from Terraform-vm to app-vm with bastion-vm as proxy
+
+Task and Subtask Screenshot in SS folder
+All task instruction in README.md for detailed instructions # read this file on github as formatted in Markdown
