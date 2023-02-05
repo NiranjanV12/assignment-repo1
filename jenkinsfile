@@ -18,6 +18,11 @@ parameters { string(name: 'IMG_VER', defaultValue: 'latest', description: '') }
                 sh 'docker build -t demoapp1 .'
                 sh 'docker tag demoapp1:latest 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER'
                 sh 'docker push 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER'
+               }
+    }
+    stage('Deploy') {
+            steps {
+
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'appserver', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''
                     pwd
                     if [  $(docker ps | grep -i "demoapp1" -wc) -eq "0" ];
