@@ -1,3 +1,9 @@
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
+
+
 module "mod_640_sg_1" {
   source = "terraform-aws-modules/security-group/aws"
 
@@ -11,7 +17,7 @@ module "mod_640_sg_1" {
       to_port     = 22
       protocol    = "tcp"
       description = "User-service ports"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = "${chomp(data.http.myip.body)}/32"
     }
 
   ]
