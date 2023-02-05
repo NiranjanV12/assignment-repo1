@@ -20,13 +20,13 @@ parameters { string(name: 'IMG_VER', defaultValue: 'latest', description: '') }
                 sh 'docker push 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER'
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'appserver', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''
                     pwd
-                    if [ -z $(docker ps | grep -i "demoapp1") ]
+                    if [  $(docker ps | grep -i "demoapp1" -wc) -eq "0" ];
                     then
                     	echo "true";
-                           	docker run -itd -p 8081:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER 
+                           	docker rm demoapp1; docker run -itd -p 8080:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:latest 
                     else 
                     	echo "false";
-                    docker stop demoapp1 && docker rm demoapp1 && docker run -itd -p 8081:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:$IMG_VER
+                    docker stop demoapp1 && docker rm demoapp1 && docker run -itd -p 8080:8081 --name demoapp1 532984066635.dkr.ecr.us-east-1.amazonaws.com/demoapp1:latest
                     fi
 
                 ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])            }
