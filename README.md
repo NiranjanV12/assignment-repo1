@@ -1,3 +1,6 @@
+![assign-arch drawio](https://user-images.githubusercontent.com/25542518/219869497-088f9a5d-2786-4b4f-afcb-5621b70c359f.png)
+
+
 # TASK_1:
 
 ### Subtask 1
